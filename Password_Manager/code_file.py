@@ -26,8 +26,8 @@ def verify_master_password():
         
     password = input("enter master password: ")
     key = generate_key(password)
-    with open(master_file,"rb") as f:
-        saved_key = f.read(key) 
+    with open(master_file, "rb") as f:
+        saved_key = f.read() 
        
     if key==saved_key:
         return key
@@ -43,7 +43,7 @@ def load_data():
     with open(data_file,"r") as f:
         return json.load(f)
     
-def saved_data(data):
+def save_data(data):
     with open(data_file,"w") as f:
         json.dump(data,f,indent=4)
 
@@ -57,7 +57,7 @@ def add_password(fernet):
     data = load_data()
     data[site]={"username":username,"password":encrypted}
     
-    saved_data(data)
+    save_data(data)
     print("password saved..")
     
 def lists_sites():
@@ -75,11 +75,13 @@ def retrieve_password(fernet):
     if site not in data:
         print("no data found.")
         return
-    
-    encrypted= data[site]["password"]
-    decrypted=fernet.decrypt(encrypted.encode()).decode()
-    print(f"username: {data[site]['username']}")
-    print(f"password: {decrypted}")
+    try:
+        encrypted = data[site]["password"]
+        decrypted = fernet.decrypt(encrypted.encode()).decode()
+        print(f"username: {data[site]['username']}")
+        print(f"password: {decrypted}")
+    except Exception as e:
+        print(f"ERROR: {e}")
     
 #____________main menu______________
 def main():
