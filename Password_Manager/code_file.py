@@ -93,7 +93,7 @@ def main():
     while True:
         print("\n-----password manager-----")
         print("1-Add password: ")
-        print("2-View password: ")
+        print("2-View Sites: ")
         print("3-Get password: ")
         print("4-Exit")
         
